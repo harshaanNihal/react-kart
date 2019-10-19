@@ -1,9 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Products from './containers/Product'
 
 function App() {
   return (
-    <div className="App">
-      <p>Rect-Kart</p>
+    <div className="row App">
+      <Products />
+
     </div>
   );
 }
