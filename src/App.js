@@ -67,7 +67,7 @@ class App extends React.Component {
       return(
         <React.Fragment>
           <Products data={filterProducts}/ >
-          <Sizes data={products} sizeDisplay={this.manageSizeDisplay}/>
+          <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
         </React.Fragment>
       )
     }

@@ -2,10 +2,13 @@ import React, { Component, Fragment } from 'react'
 
 
 function Size(props) {
-  const { size, sizeDisplayFunc } = props
+  const { size, displayBlack, sizeDisplayFunc } = props
+  if (displayBlack.includes(size)) {
+    var color = 'black-button'
+  }
   return (
     <div>
-      <button name={size} onClick={sizeDisplayFunc}>{size}</button>
+      <button className={color} name={size} onClick={sizeDisplayFunc}>{size}</button>
     </div>
   )
 }
@@ -33,13 +36,13 @@ export default class Sizes extends Component {
   }  
 
   render() {
-    const { data, sizeDisplay } = this.props;
+    const { data, displayArr, sizeDisplay } = this.props;
     let uniqueSizeArr = this.uniqueSizes(this.getSizes(data)) 
 
     return(
       <div className='sizes'> 
       <p>Sizes:</p>
-        {uniqueSizeArr.map((size, i)=> <Size key={i} size={size} sizeDisplayFunc={sizeDisplay} /> )}
+        {uniqueSizeArr.map((size, i)=> <Size key={i} displayBlack={displayArr} size={size} sizeDisplayFunc={sizeDisplay} /> )}
       </div>
     )
   }
