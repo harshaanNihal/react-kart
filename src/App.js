@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Products from './containers/Product'
+import Sizes from './containers/Sizes';
+import { isNumericLiteral } from '@babel/types';
 
 
 
@@ -10,7 +12,8 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      products: null
+      products: null,
+      displaySizes: [],
     }
   }
 
@@ -22,11 +25,31 @@ class App extends React.Component {
       }))
   }
 
+  manageSizeDisplay = (e) => {
+    const { displaySizes } = this.state;
+    if (displaySizes.includes(e.target.name)) {
+      displaySizes.splice(displaySizes.indexOf(e.target.name), 1)
+      this.setState({
+        displaySizes
+      })
+    } else {
+      displaySizes.push(e.target.name)
+      this.setState({
+        displaySizes
+      })
+    }
+  }
+
+
+
   render() {
     const { products } = this.state;
     if (products) {
       return(
-        <Products data={products}/>
+        <React.Fragment>
+          <Products data={products}/>
+          <Sizes data={products} sizeDisplay={this.manageSizeDisplay}/>
+        </React.Fragment>
       )
     }
     return(
