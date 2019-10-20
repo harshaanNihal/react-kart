@@ -40,14 +40,33 @@ class App extends React.Component {
     }
   }
 
+  filterProductBySize = (products, displayArr) => {
+    if (displayArr.length === 0) {
+      return products
+    } else {
+      let filterArr = [];
+      for (let obj of products) {
+        for (let size of obj['availableSizes']) {
+          if (displayArr.includes(size)) {
+            if (!filterArr.includes(obj)) {
+              filterArr.push(obj)
+            }
+          }
+        }
+      }
+      return filterArr;
+    } 
+  }
+
 
 
   render() {
-    const { products } = this.state;
+    const { products, displaySizes } = this.state;
     if (products) {
+      let filterProducts = this.filterProductBySize(products, displaySizes)
       return(
         <React.Fragment>
-          <Products data={products}/>
+          <Products data={filterProducts}/ >
           <Sizes data={products} sizeDisplay={this.manageSizeDisplay}/>
         </React.Fragment>
       )
