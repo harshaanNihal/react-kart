@@ -24,7 +24,7 @@ export default class Products extends Component {
     if (products) {
       console.log(products)
       return (
-        <div className='col-s4 m7 products'>
+        <div className='col s10 products'>
           {products && products.map((product) => <ProductInfo key={product.id} info={product}/> )}
         </div>
       )

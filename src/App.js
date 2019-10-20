@@ -5,7 +5,7 @@ import Products from './containers/Product'
 
 function App() {
   return (
-    <div className="row App">
+    <div className="App">
       <Products />
 
     </div>
