@@ -3,8 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import Products from './containers/Product'
 import Sizes from './containers/Sizes';
-import { isNumericLiteral } from '@babel/types';
-
 
 
 class App extends React.Component {
