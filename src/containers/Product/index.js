@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ProductInfo } from '../../components/Product'
+import SortProduct from '../Product/SortProduct';
 
 
 export default class Products extends Component {
@@ -7,7 +8,8 @@ export default class Products extends Component {
     super(props)
 
     this.state = {
-      products: null
+      products: null,
+      sortBy: null
     }
   }
 
@@ -19,14 +21,34 @@ export default class Products extends Component {
       }))
   }
 
+  sortProducts = (products, sortOrder) => {
+    if (sortOrder === 'lowestPrice') {
+      return [...products].sort((a,b) => a.price - b.price)
+    }
+    if (sortOrder === 'highestPrice') {
+      return [...products].sort((a,b) => b.price - a.price)
+    }
+    return products
+  }
+
+  getSortBy = (value) => {
+    this.setState({
+      sortBy: value
+    })
+  }
+
   render() {
-    const { products } = this.state
+    const { products, sortBy } = this.state
     if (products) {
-      console.log(products)
+      let filterProducts;
+      filterProducts = this.sortProducts(products, sortBy)
       return (
-        <div className='col s10 products'>
-          {products && products.map((product) => <ProductInfo key={product.id} info={product}/> )}
-        </div>
+        <Fragment>
+          <div className='col s9 products'>
+           {filterProducts && filterProducts.map((product) => <ProductInfo key={product.id} info={product}/> )}
+          </div>
+          <SortProduct sort={this.getSortBy} />
+        </Fragment>
       )
     }
     return (

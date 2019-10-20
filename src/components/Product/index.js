@@ -1,7 +1,6 @@
 import React from 'react'
 
 export function ProductInfo(props) {
-  console.log(props.info)
   const { title, price, currencyFormat, isFreeShipping, sku } = props.info
   return (
     <div className='col s12 m6 l3'>
@@ -11,7 +10,7 @@ export function ProductInfo(props) {
         {isFreeShipping && <span className='card-title'>Free Shipping</span>}
         </div>
         <div className='card=content'>
-          <h6>{title}</h6>
+          <p>{title}</p>
           <p>{`${currencyFormat} ${price}`}</p>
         </div>
         <button className='waves-effect waves-light btn-small'>
