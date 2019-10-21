@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Products from './containers/Product'
 import Sizes from './containers/Sizes';
+import Cart from './containers/Cart';
 
 
 class App extends React.Component {
@@ -12,6 +13,7 @@ class App extends React.Component {
     this.state = {
       products: null,
       displaySizes: [],
+      cartProduct: []
     }
   }
 
@@ -56,16 +58,46 @@ class App extends React.Component {
     } 
   }
 
+  manageCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.push(product)
+    this.setState({
+      cartProduct,
+    })
+  }
 
+  filterCartProducts = (cartProducts) => {
+    return cartProducts.reduce((acc, product)=> {
+      if (acc.length === 0) {
+        let prod = {data: product, quantity:1}
+        acc.push(prod);
+      } else {
+        let flag = false;
+        for (let accObj of acc) {
+          if (accObj.data.id === product.id) {
+            accObj.quantity += 1
+            flag = true;
+          }
+        }
+        if (!flag) {
+          let prod = {data: product, quantity: 1}
+          acc.push(prod)
+        }
+      }
+      return acc;
+    }, [])
+  }
 
   render() {
-    const { products, displaySizes } = this.state;
+    const { products, displaySizes, cartProduct } = this.state;
     if (products) {
       let filterProducts = this.filterProductBySize(products, displaySizes)
+      let cartProductCount = this.filterCartProducts(cartProduct)
       return(
         <React.Fragment>
-          <Products data={filterProducts}/ >
+          <Products data={filterProducts} manageCart={this.manageCartProducts} />
           <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
+          <Cart product={cartProductCount} />
         </React.Fragment>
       )
     }

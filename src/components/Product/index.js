@@ -1,6 +1,7 @@
 import React from 'react'
 
 export function ProductInfo(props) {
+  const { info, addToCart } = props;
   const { title, price, currencyFormat, isFreeShipping, sku } = props.info
   return (
     <div className='col s12 m6 l3'>
@@ -13,7 +14,10 @@ export function ProductInfo(props) {
           <p>{title}</p>
           <p>{`${currencyFormat} ${price}`}</p>
         </div>
-        <button className='waves-effect waves-light btn-small'>
+        <button 
+        className='waves-effect waves-light btn-small'
+        onClick = {()=> addToCart(info)}
+        >
           Add to cart
         </button>
       </div>
