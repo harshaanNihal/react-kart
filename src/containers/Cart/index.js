@@ -20,15 +20,36 @@ function CartProduct (props) {
     )}
 }
 
-export default function Cart (props) {
+export default class Cart extends Component {
 
-  const { product, removeProduct } = props;
-  return (
-    <div className='cart'>
-      <p>Cart</p>
-      {product.length === 0 ? <p>No Products in your cart!</p> : product.map((val, index)=> <CartProduct delProd={removeProduct} prod={val} key={index}/> )}
-    </div>
-  )
+  getPrice = (products) => {
+    return products.reduce((acc, obj)=> {
+      acc = acc + obj.data.price;
+      return acc
+    } , 0)
+  }
+  
+  checkOut = (totalPrice) => {
+    alert(`Checkout - Subtotal $ ${totalPrice}`)
+  }
+
+
+  render() {
+    const { product, removeProduct } = this.props;
+    const totalPrice = this.getPrice(product)
+    return (
+      <div className='cart'>
+        <p>Cart</p>
+        {product.length === 0 ? <p>Add some products in your cart :)</p> : product.map((val, index)=> <CartProduct delProd={removeProduct} prod={val} key={index}/> )}
+        <div className='checkout'>
+          <p>{`Total Amount: $ ${totalPrice}`}</p>
+          <button onClick={()=>this.checkOut(totalPrice)}>Check Out</button>
+        </div>
+      </div>
+    )
+
+  }
+
 }
 
 
