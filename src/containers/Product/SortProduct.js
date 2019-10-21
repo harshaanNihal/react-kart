@@ -21,7 +21,7 @@ export default class SortProduct extends Component {
 
   render() {
     return(
-      <div className='col s3'>
+      <div className='sort-box'>
         <p>orderBy</p>
         <div className="input-field">
           <select className="browser-default" onChange={this.changeOrder}>
