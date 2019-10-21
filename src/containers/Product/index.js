@@ -34,12 +34,14 @@ export default class Products extends Component {
     let filterProducts;
     filterProducts = this.sortProducts(data, sortBy)
     return (
-      <Fragment>
-        <div className='col s9 products'>
+      <section>
+        <div className='sort-container'>
+        <SortProduct sort={this.getSortBy} />
+        </div>
+        <div className='product-wrapper'>
           {filterProducts && filterProducts.map((product) => <ProductInfo key={product.id} info={product} addToCart={manageCart}/> )}
         </div>
-        <SortProduct sort={this.getSortBy} />
-      </Fragment>
+      </section>
       )
   }
 }

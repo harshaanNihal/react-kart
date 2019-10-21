@@ -42,7 +42,10 @@ export default class Sizes extends Component {
     return(
       <div className='sizes'> 
       <p>Sizes:</p>
+      <section className='size-wrapper'>
+
         {uniqueSizeArr.map((size, i)=> <Size key={i} displayBlack={displayArr} size={size} sizeDisplayFunc={sizeDisplay} /> )}
+      </section>
       </div>
     )
   }

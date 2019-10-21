@@ -13,7 +13,8 @@ class App extends React.Component {
     this.state = {
       products: null,
       displaySizes: [],
-      cartProduct: []
+      cartProduct: [],
+      showCart: false
     }
   }
 
@@ -96,17 +97,27 @@ class App extends React.Component {
     }, [])
   }
 
+  displayCart = () => {
+    this.setState({
+      showCart: !this.state.showCart
+    })
+  }
+
   render() {
-    const { products, displaySizes, cartProduct } = this.state;
+    const { products, displaySizes, cartProduct, showCart } = this.state;
     if (products) {
       let filterProducts = this.filterProductBySize(products, displaySizes)
       let cartProductCount = this.filterCartProducts(cartProduct)
+      let cartSection = <button className='cart-toggle' onClick={this.displayCart}>Cart</button>
+      if (showCart) {
+        cartSection = <Cart product={cartProductCount} showKart={this.displayCart} removeProduct={this.removeCartProducts} />
+      } 
       return(
-        <React.Fragment>
-          <Products data={filterProducts} manageCart={this.manageCartProducts} />
+        <section className='main-wrapper'>
           <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
-          <Cart product={cartProductCount} removeProduct={this.removeCartProducts} />
-        </React.Fragment>
+          <Products data={filterProducts} manageCart={this.manageCartProducts} />
+          {cartSection}
+        </section>
       )
     }
     return(
