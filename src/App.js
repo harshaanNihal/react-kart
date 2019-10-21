@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Products from './containers/Product'
 import Sizes from './containers/Sizes';
+import Cart from './containers/Cart';
 
 
 class App extends React.Component {
@@ -12,6 +13,8 @@ class App extends React.Component {
     this.state = {
       products: null,
       displaySizes: [],
+      cartProduct: [],
+      showCart: false
     }
   }
 
@@ -56,17 +59,65 @@ class App extends React.Component {
     } 
   }
 
+  manageCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.push(product)
+    this.setState({
+      cartProduct,
+    })
+  }
 
+  removeCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.splice(cartProduct.indexOf(product), 1)
+    this.setState({
+      cartProduct
+    })
+  }
+
+  filterCartProducts = (cartProducts) => {
+    return cartProducts.reduce((acc, product)=> {
+      if (acc.length === 0) {
+        let prod = {data: product, quantity:1}
+        acc.push(prod);
+      } else {
+        let flag = false;
+        for (let accObj of acc) {
+          if (accObj.data.id === product.id) {
+            accObj.quantity += 1
+            flag = true;
+          }
+        }
+        if (!flag) {
+          let prod = {data: product, quantity: 1}
+          acc.push(prod)
+        }
+      }
+      return acc;
+    }, [])
+  }
+
+  displayCart = () => {
+    this.setState({
+      showCart: !this.state.showCart
+    })
+  }
 
   render() {
-    const { products, displaySizes } = this.state;
+    const { products, displaySizes, cartProduct, showCart } = this.state;
     if (products) {
       let filterProducts = this.filterProductBySize(products, displaySizes)
+      let cartProductCount = this.filterCartProducts(cartProduct)
+      let cartSection = <button className='cart-toggle' onClick={this.displayCart}>Cart</button>
+      if (showCart) {
+        cartSection = <Cart product={cartProductCount} showKart={this.displayCart} removeProduct={this.removeCartProducts} />
+      } 
       return(
-        <React.Fragment>
-          <Products data={filterProducts}/ >
+        <section className='main-wrapper'>
           <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
-        </React.Fragment>
+          <Products data={filterProducts} manageCart={this.manageCartProducts} />
+          {cartSection}
+        </section>
       )
     }
     return(

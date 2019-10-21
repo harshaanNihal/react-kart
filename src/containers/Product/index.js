@@ -30,16 +30,18 @@ export default class Products extends Component {
 
   render() {
     const { sortBy } = this.state
-    const { data } = this.props
+    const { data, manageCart } = this.props
     let filterProducts;
     filterProducts = this.sortProducts(data, sortBy)
     return (
-      <Fragment>
-        <div className='col s9 products'>
-          {filterProducts && filterProducts.map((product) => <ProductInfo key={product.id} info={product}/> )}
-        </div>
+      <section>
+        <div className='sort-container'>
         <SortProduct sort={this.getSortBy} />
-      </Fragment>
+        </div>
+        <div className='product-wrapper'>
+          {filterProducts && filterProducts.map((product) => <ProductInfo key={product.id} info={product} addToCart={manageCart}/> )}
+        </div>
+      </section>
       )
   }
 }
