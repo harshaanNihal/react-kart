@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Products from './containers/Product'
-
+import Sizes from './containers/Sizes';
+import Cart from './containers/Cart';
 
 
 class App extends React.Component {
@@ -10,7 +11,10 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      products: null
+      products: null,
+      displaySizes: [],
+      cartProduct: [],
+      showCart: false
     }
   }
 
@@ -22,11 +26,98 @@ class App extends React.Component {
       }))
   }
 
+  manageSizeDisplay = (e) => {
+    const { displaySizes } = this.state;
+    if (displaySizes.includes(e.target.name)) {
+      displaySizes.splice(displaySizes.indexOf(e.target.name), 1)
+      this.setState({
+        displaySizes
+      })
+    } else {
+      displaySizes.push(e.target.name)
+      this.setState({
+        displaySizes
+      })
+    }
+  }
+
+  filterProductBySize = (products, displayArr) => {
+    if (displayArr.length === 0) {
+      return products
+    } else {
+      let filterArr = [];
+      for (let obj of products) {
+        for (let size of obj['availableSizes']) {
+          if (displayArr.includes(size)) {
+            if (!filterArr.includes(obj)) {
+              filterArr.push(obj)
+            }
+          }
+        }
+      }
+      return filterArr;
+    } 
+  }
+
+  manageCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.push(product)
+    this.setState({
+      cartProduct,
+    })
+  }
+
+  removeCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.splice(cartProduct.indexOf(product), 1)
+    this.setState({
+      cartProduct
+    })
+  }
+
+  filterCartProducts = (cartProducts) => {
+    return cartProducts.reduce((acc, product)=> {
+      if (acc.length === 0) {
+        let prod = {data: product, quantity:1}
+        acc.push(prod);
+      } else {
+        let flag = false;
+        for (let accObj of acc) {
+          if (accObj.data.id === product.id) {
+            accObj.quantity += 1
+            flag = true;
+          }
+        }
+        if (!flag) {
+          let prod = {data: product, quantity: 1}
+          acc.push(prod)
+        }
+      }
+      return acc;
+    }, [])
+  }
+
+  displayCart = () => {
+    this.setState({
+      showCart: !this.state.showCart
+    })
+  }
+
   render() {
-    const { products } = this.state;
+    const { products, displaySizes, cartProduct, showCart } = this.state;
     if (products) {
+      let filterProducts = this.filterProductBySize(products, displaySizes)
+      let cartProductCount = this.filterCartProducts(cartProduct)
+      let cartSection = <button className='cart-toggle' onClick={this.displayCart}>Cart</button>
+      if (showCart) {
+        cartSection = <Cart product={cartProductCount} showKart={this.displayCart} removeProduct={this.removeCartProducts} />
+      } 
       return(
-        <Products data={products}/>
+        <section className='main-wrapper'>
+          <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
+          <Products data={filterProducts} manageCart={this.manageCartProducts} />
+          {cartSection}
+        </section>
       )
     }
     return(
