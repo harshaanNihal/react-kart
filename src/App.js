@@ -66,6 +66,14 @@ class App extends React.Component {
     })
   }
 
+  removeCartProducts = (product) => {
+    const { cartProduct } = this.state;
+    cartProduct.splice(cartProduct.indexOf(product), 1)
+    this.setState({
+      cartProduct
+    })
+  }
+
   filterCartProducts = (cartProducts) => {
     return cartProducts.reduce((acc, product)=> {
       if (acc.length === 0) {
@@ -97,7 +105,7 @@ class App extends React.Component {
         <React.Fragment>
           <Products data={filterProducts} manageCart={this.manageCartProducts} />
           <Sizes data={products} displayArr={displaySizes} sizeDisplay={this.manageSizeDisplay}/>
-          <Cart product={cartProductCount} />
+          <Cart product={cartProductCount} removeProduct={this.removeCartProducts} />
         </React.Fragment>
       )
     }
