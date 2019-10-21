@@ -31,7 +31,7 @@ export default class Cart extends Component {
 
   getPrice = (products) => {
     return products.reduce((acc, obj) => {
-      acc = acc + obj.data.price;
+      acc = acc + (obj.quantity * obj.data.price);
       return acc
     }, 0)
   }
