@@ -38,6 +38,7 @@ export default class Products extends Component {
         <div className='sort-container'>
         <SortProduct sort={this.getSortBy} />
         </div>
+        <p>{filterProducts.length} Product(s) found.</p>
         <div className='product-wrapper'>
           {filterProducts && filterProducts.map((product) => <ProductInfo key={product.id} info={product} addToCart={manageCart}/> )}
         </div>
